@@ -1,0 +1,345 @@
+Sub Create_Tables()
+
+DoCmd.RunSQL "CREATE TABLE Client_gerant(" & _
+   "Id_Client_gerant BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "statut_ VARCHAR(50) NOT NULL," & _
+   "limite_credit INT NOT NULL," & _
+   "credit_accorde INT NOT NULL," & _
+   "credit_rembourse INT NOT NULL," & _
+   "PRIMARY KEY(Id_Client_gerant)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(statut_)," & _
+   "UNIQUE(limite_credit)," & _
+   "UNIQUE(credit_accorde)," & _
+   "UNIQUE(credit_rembourse)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Client_direction(" & _
+   "Id_Client_direction BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "statut VARCHAR(50) NOT NULL," & _
+   "limite_credit INT NOT NULL," & _
+   "credit_accorde INT NOT NULL," & _
+   "credit_rembourse INT NOT NULL," & _
+   "PRIMARY KEY(Id_Client_direction)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(statut)," & _
+   "UNIQUE(limite_credit)," & _
+   "UNIQUE(credit_accorde)," & _
+   "UNIQUE(credit_rembourse)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Gerant(" & _
+   "Id_Gerant BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "prenom VARCHAR(50) NOT NULL," & _
+   "login VARCHAR(50) NOT NULL," & _
+   "adresse VARCHAR(50) NOT NULL," & _
+   "tel VARCHAR(50) NOT NULL," & _
+   "email VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(Id_Gerant)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(prenom)," & _
+   "UNIQUE(login)," & _
+   "UNIQUE(adresse)," & _
+   "UNIQUE(tel)," & _
+   "UNIQUE(email)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Direction(" & _
+   "Id_Direction BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "adresse VARCHAR(50) NOT NULL," & _
+   "tel VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(Id_Direction)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(adresse)," & _
+   "UNIQUE(tel)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Fournisseur(" & _
+   "Id_Fournisseur BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "adresse VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(Id_Fournisseur)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(adresse)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Stock(" & _
+   "Id_Stock BIGINT," & _
+   "stock_super INT NOT NULL," & _
+   "stock_gazoil INT NOT NULL," & _
+   "PRIMARY KEY(Id_Stock)," & _
+   "UNIQUE(stock_super)," & _
+   "UNIQUE(stock_gazoil)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Banque(" & _
+   "Id_Banque COUNTER," & _
+   "PRIMARY KEY(Id_Banque)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Station(" & _
+   "Id_Station BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "adresse VARCHAR(50) NOT NULL," & _
+   "tel VARCHAR(50) NOT NULL," & _
+   "objectif VARCHAR(50) NOT NULL," & _
+   "statut VARCHAR(50) NOT NULL," & _
+   "Id_Direction BIGINT NOT NULL," & _
+   "Id_Gerant BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Station)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(adresse)," & _
+   "UNIQUE(tel)," & _
+   "UNIQUE(objectif)," & _
+   "UNIQUE(statut)," & _
+   "FOREIGN KEY(Id_Direction) REFERENCES Direction(Id_Direction)," & _
+   "FOREIGN KEY(Id_Gerant) REFERENCES Gerant(Id_Gerant)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Pompiste(" & _
+   "Id_Pompiste BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "prenom VARCHAR(50) NOT NULL," & _
+   "adresse VARCHAR(50) NOT NULL," & _
+   "tel VARCHAR(50) NOT NULL," & _
+   "statut VARCHAR(50) NOT NULL," & _
+   "Id_Station BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Pompiste)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(prenom)," & _
+   "UNIQUE(adresse)," & _
+   "UNIQUE(tel)," & _
+   "UNIQUE(statut)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Vente(" & _
+   "Id_Vente BIGINT," & _
+   "vente_cash INT NOT NULL," & _
+   "vente_tpe INT NOT NULL," & _
+   "vente_credit INT NOT NULL," & _
+   "Id_Direction BIGINT," & _
+   "Id_Stock BIGINT NOT NULL," & _
+   "Id_Gerant BIGINT NOT NULL," & _
+   "Id_Station BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Vente)," & _
+   "UNIQUE(vente_cash)," & _
+   "UNIQUE(vente_tpe)," & _
+   "UNIQUE(vente_credit)," & _
+   "FOREIGN KEY(Id_Direction) REFERENCES Direction(Id_Direction)," & _
+   "FOREIGN KEY(Id_Stock) REFERENCES Stock(Id_Stock)," & _
+   "FOREIGN KEY(Id_Gerant) REFERENCES Gerant(Id_Gerant)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Chauffeur(" & _
+   "Id_Chauffeur BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "prenom VARCHAR(50) NOT NULL," & _
+   "status VARCHAR(50) NOT NULL," & _
+   "Id_Station BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Chauffeur)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(prenom)," & _
+   "UNIQUE(status)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Index(" & _
+   "Id_Index BIGINT," & _
+   "type VARCHAR(50) NOT NULL," & _
+   "debut VARCHAR(50) NOT NULL," & _
+   "fin VARCHAR(50) NOT NULL," & _
+   "Id_Gerant BIGINT NOT NULL," & _
+   "Id_Pompiste BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Index)," & _
+   "UNIQUE(type)," & _
+   "UNIQUE(debut)," & _
+   "UNIQUE(fin)," & _
+   "FOREIGN KEY(Id_Gerant) REFERENCES Gerant(Id_Gerant)," & _
+   "FOREIGN KEY(Id_Pompiste) REFERENCES Pompiste(Id_Pompiste)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Livraison(" & _
+   "Id_Livraison COUNTER," & _
+   "Id_Chauffeur BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Livraison)," & _
+   "FOREIGN KEY(Id_Chauffeur) REFERENCES Chauffeur(Id_Chauffeur)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Livraison_vip(" & _
+   "Id_Livraison_vip COUNTER," & _
+   "Id_Chauffeur BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Livraison_vip)," & _
+   "FOREIGN KEY(Id_Chauffeur) REFERENCES Chauffeur(Id_Chauffeur)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Camion(" & _
+   "Id_Camion COUNTER," & _
+   "mat_camion VARCHAR(50) NOT NULL," & _
+   "Id_Chauffeur BIGINT," & _
+   "PRIMARY KEY(Id_Camion)," & _
+   "UNIQUE(mat_camion)," & _
+   "FOREIGN KEY(Id_Chauffeur) REFERENCES Chauffeur(Id_Chauffeur)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Commande_direction(" & _
+   "Id_Commande BIGINT," & _
+   "liste TEXT NOT NULL," & _
+   "quantite INT NOT NULL," & _
+   "_date DATE NOT NULL," & _
+   "Id_Livraison_vip INT NOT NULL," & _
+   "Id_Station BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Commande)," & _
+   "UNIQUE(liste)," & _
+   "UNIQUE(quantite)," & _
+   "UNIQUE(_date)," & _
+   "FOREIGN KEY(Id_Livraison_vip) REFERENCES Livraison_vip(Id_Livraison_vip)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Commande_gerant(" & _
+   "Id_Commande_gerant BIGINT," & _
+   "Id_Livraison INT NOT NULL," & _
+   "Id_Station BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Commande_gerant)," & _
+   "FOREIGN KEY(Id_Livraison) REFERENCES Livraison(Id_Livraison)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Produit(" & _
+   "Id_Produit BIGINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "reference VARCHAR(50) NOT NULL," & _
+   "prix INT NOT NULL," & _
+   "Id_Commande_gerant BIGINT NOT NULL," & _
+   "Id_Commande BIGINT NOT NULL," & _
+   "Id_Chauffeur BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Produit)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(reference)," & _
+   "UNIQUE(prix)," & _
+   "FOREIGN KEY(Id_Commande_gerant) REFERENCES Commande_gerant(Id_Commande_gerant)," & _
+   "FOREIGN KEY(Id_Commande) REFERENCES Commande_direction(Id_Commande)," & _
+   "FOREIGN KEY(Id_Chauffeur) REFERENCES Chauffeur(Id_Chauffeur)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Cuve(" & _
+   "Id_Cuve BIGINT," & _
+   "capacite INT NOT NULL," & _
+   "statut VARCHAR(50) NOT NULL," & _
+   "Id_Produit BIGINT," & _
+   "Id_Station BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Cuve)," & _
+   "UNIQUE(capacite)," & _
+   "UNIQUE(statut)," & _
+   "FOREIGN KEY(Id_Produit) REFERENCES Produit(Id_Produit)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE Pompe(" & _
+   "Id_Pompe BIGINT," & _
+   "statut VARCHAR(50) NOT NULL," & _
+   "libelle VARCHAR(50) NOT NULL," & _
+   "Id_Index BIGINT NOT NULL," & _
+   "Id_Pompiste BIGINT NOT NULL," & _
+   "Id_Cuve BIGINT NOT NULL," & _
+   "PRIMARY KEY(Id_Pompe)," & _
+   "UNIQUE(statut)," & _
+   "UNIQUE(libelle)," & _
+   "FOREIGN KEY(Id_Index) REFERENCES Index(Id_Index)," & _
+   "FOREIGN KEY(Id_Pompiste) REFERENCES Pompiste(Id_Pompiste)," & _
+   "FOREIGN KEY(Id_Cuve) REFERENCES Cuve(Id_Cuve)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE approvisionner(" & _
+   "Id_Station BIGINT," & _
+   "Id_Fournisseur BIGINT," & _
+   "_date DATE NOT NULL," & _
+   "liste_produitts TEXT NOT NULL," & _
+   "quantite_produits INT NOT NULL," & _
+   "PRIMARY KEY(Id_Station, Id_Fournisseur)," & _
+   "UNIQUE(_date)," & _
+   "UNIQUE(liste_produitts)," & _
+   "UNIQUE(quantite_produits)," & _
+   "FOREIGN KEY(Id_Station) REFERENCES Station(Id_Station)," & _
+   "FOREIGN KEY(Id_Fournisseur) REFERENCES Fournisseur(Id_Fournisseur)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE envoyer(" & _
+   "Id_Fournisseur BIGINT," & _
+   "Id_Produit BIGINT," & _
+   "quantite VARCHAR(50) NOT NULL," & _
+   "liste_produits VARCHAR(50) NOT NULL," & _
+   "_date VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(Id_Fournisseur, Id_Produit)," & _
+   "UNIQUE(quantite)," & _
+   "UNIQUE(liste_produits)," & _
+   "UNIQUE(_date)," & _
+   "FOREIGN KEY(Id_Fournisseur) REFERENCES Fournisseur(Id_Fournisseur)," & _
+   "FOREIGN KEY(Id_Produit) REFERENCES Produit(Id_Produit)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE verser(" & _
+   "Id_Gerant BIGINT," & _
+   "Id_Banque INT," & _
+   "montant VARCHAR(50)," & _
+   "PRIMARY KEY(Id_Gerant, Id_Banque)," & _
+   "UNIQUE(montant)," & _
+   "FOREIGN KEY(Id_Gerant) REFERENCES Gerant(Id_Gerant)," & _
+   "FOREIGN KEY(Id_Banque) REFERENCES Banque(Id_Banque)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE prendre_credit(" & _
+   "Id_Client_gerant BIGINT," & _
+   "Id_Gerant BIGINT," & _
+   "montant INT NOT NULL," & _
+   "_date DATE," & _
+   "PRIMARY KEY(Id_Client_gerant, Id_Gerant)," & _
+   "UNIQUE(montant)," & _
+   "UNIQUE(_date)," & _
+   "FOREIGN KEY(Id_Client_gerant) REFERENCES Client_gerant(Id_Client_gerant)," & _
+   "FOREIGN KEY(Id_Gerant) REFERENCES Gerant(Id_Gerant)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE rembourser_credit(" & _
+   "Id_Client_gerant BIGINT," & _
+   "Id_Gerant BIGINT," & _
+   "montant INT NOT NULL," & _
+   "_date DATE NOT NULL," & _
+   "PRIMARY KEY(Id_Client_gerant, Id_Gerant)," & _
+   "UNIQUE(montant)," & _
+   "UNIQUE(_date)," & _
+   "FOREIGN KEY(Id_Client_gerant) REFERENCES Client_gerant(Id_Client_gerant)," & _
+   "FOREIGN KEY(Id_Gerant) REFERENCES Gerant(Id_Gerant)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE reclamer_credit(" & _
+   "Id_Client_direction BIGINT," & _
+   "Id_Direction BIGINT," & _
+   "montant INT NOT NULL," & _
+   "_date DATE NOT NULL," & _
+   "PRIMARY KEY(Id_Client_direction, Id_Direction)," & _
+   "UNIQUE(montant)," & _
+   "UNIQUE(_date)," & _
+   "FOREIGN KEY(Id_Client_direction) REFERENCES Client_direction(Id_Client_direction)," & _
+   "FOREIGN KEY(Id_Direction) REFERENCES Direction(Id_Direction)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE acquiter_credit(" & _
+   "Id_Client_direction BIGINT," & _
+   "Id_Direction BIGINT," & _
+   "montant INT NOT NULL," & _
+   "_date DATE NOT NULL," & _
+   "PRIMARY KEY(Id_Client_direction, Id_Direction)," & _
+   "UNIQUE(montant)," & _
+   "UNIQUE(_date)," & _
+   "FOREIGN KEY(Id_Client_direction) REFERENCES Client_direction(Id_Client_direction)," & _
+   "FOREIGN KEY(Id_Direction) REFERENCES Direction(Id_Direction)" & _
+");"   
+
+End Sub
